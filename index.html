@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oyun Bilgisayarı Sistem Önerisi</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body {
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: #fff;
+  margin: 0;
+  padding: 0 20px;
+}
+h1 {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 2.5rem;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+}
+.selector-container {
+  max-width: 400px;
+  margin: 20px auto;
+  text-align: center;
+}
+select, button {
+  width: 100%;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 10px;
+  border: none;
+  font-size: 1rem;
+}
+select {
+  background-color: #1c1c1c;
+  color: #fff;
+}
+button {
+  background-color: #ff4b2b;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+button:hover {
+  background-color: #ff416c;
+  transform: scale(1.05);
+}
+.result {
+  max-width: 800px;
+  margin: 30px auto;
+  background: rgba(255,255,255,0.1);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+.result h2 {
+  text-align: center;
+  text-shadow: 1px 1px 6px rgba(0,0,0,0.5);
+}
+.result ul {
+  list-style: none;
+  padding: 0;
+}
+.result li {
+  margin: 10px 0;
+  background: rgba(255,255,255,0.05);
+  padding: 10px 15px;
+  border-radius: 10px;
+}
+.total {
+  text-align: center;
+  font-size: 1.3rem;
+  margin-top: 15px;
+  font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<h1>Oyun Bilgisayarı Sistem Önerisi</h1>
+
+<div class="selector-container">
+  <select id="budget">
+    <option value="22500">22.500 TL</option>
+    <option value="25000">25.000 TL</option>
+    <option value="30000">30.000 TL</option>
+    <option value="35000">35.000 TL</option>
+    <option value="40000">40.000 TL</option>
+  </select>
+  <button onclick="showSystem()">Sistemi Göster</button>
+</div>
+
+<div id="result" class="result"></div>
+
+<script>
+const systems = {
+  22500: {
+    CPU: { name: "AMD Ryzen 7 5700", price: 4100 },
+    GPU: { name: "PNY GeForce RTX 3050 Verto Dual 6GB", price: 8700 },
+    RAM: { name: "Hikvision U10 Urien 16 GB 3200 MT", price: 1000 },
+    SSD: { name: "MLD M300 1TB", price: 2400 },
+    Mobo: { name: "MSI A520M PRO AM4 DDR4", price: 2300 },
+    PSU: { name: "PowerBoost Fury 650W", price: 1900 },
+    Case: { name: "XASER MG3146 3x RGB Fan", price: 1100 },
+    Cooler: { name: "Thermalright Assassin Spirit 120 Plus V2", price: 1000 }
+  },
+  25000: {
+    CPU: { name: "AMD Ryzen 7 5700", price: 4100 },
+    GPU: { name: "Gigabyte Radeon RX 7600 Gaming OC 8GB", price: 12000 },
+    RAM: { name: "Hikvision U10 Urien 16 GB 3200 MT", price: 1000 },
+    SSD: { name: "MLD M300 1TB", price: 2400 },
+    Mobo: { name: "MSI A520M PRO AM4 DDR4", price: 2300 },
+    PSU: { name: "PowerBoost Fury 650W", price: 1900 },
+    Case: { name: "XASER MG3146 3x RGB Fan", price: 1100 },
+    Cooler: { name: "Thermalright Assassin Spirit 120 Plus V2", price: 1000 }
+  },
+  30000: {
+    CPU: { name: "AMD Ryzen 5 8400F", price: 4100 },
+    GPU: { name: "Gigabyte Radeon RX 7600 Gaming OC 8GB", price: 12000 },
+    RAM: { name: "Patriot Viper Venom 32 GB 6000 MT", price: 4000 },
+    SSD: { name: "MLD M300 1TB", price: 2400 },
+    Mobo: { name: "MSI Pro B650M-B AMD AM5 DDR5 Micro ATX", price: 4100 },
+    PSU: { name: "PowerBoost Fury 650W", price: 1900 },
+    Case: { name: "XASER MG3146 3x RGB Fan", price: 1100 },
+    Cooler: { name: "Thermalright Assassin Spirit 120 Plus V2", price: 1000 }
+  },
+  35000: {
+    CPU: { name: "AMD Ryzen 5 8400F", price: 4100 },
+    GPU: { name: "Palit GeForce RTX 5060 Infinity 3", price: 17300 },
+    RAM: { name: "Patriot Viper Venom 32 GB 6000 MT", price: 4000 },
+    SSD: { name: "MLD M300 1TB", price: 2400 },
+    Mobo: { name: "MSI Pro B650M-B AMD AM5 DDR5 Micro ATX", price: 4100 },
+    PSU: { name: "PowerBoost Fury 650W", price: 1900 },
+    Case: { name: "XASER MG3146 3x RGB Fan", price: 1100 },
+    Cooler: { name: "Thermalright Assassin Spirit 120 Plus V2", price: 1000 }
+  },
+  40000: {
+    CPU: { name: "AMD Ryzen 5 8400F", price: 4100 },
+    GPU: { name: "PNY GeForce RTX 5060 Ti 8GB Dual OC", price: 21800 },
+    RAM: { name: "Patriot Viper Venom 32 GB 6000 MT", price: 4000 },
+    SSD: { name: "MLD M300 1TB", price: 2400 },
+    Mobo: { name: "MSI Pro B650M-B AMD AM5 DDR5 Micro ATX", price: 4100 },
+    Case: { name: "MSI MAG Forge 120A 650W", price: 3600 },
+    Cooler: { name: "Thermalright Assassin Spirit 120 Plus V2", price: 1000 }
+  }
+};
+
+function showSystem() {
+  const budget = document.getElementById("budget").value;
+  const sys = systems[budget];
+  const resultDiv = document.getElementById("result");
+
+  if (!sys) {
+    resultDiv.innerHTML = "<p style='color:red;'>Bu bütçe için sistem bulunamadı.</p>";
+    return;
+  }
+
+  const total = sys.CPU.price + sys.GPU.price + sys.RAM.price + sys.SSD.price + sys.Mobo.price + sys.Case.price + (sys.PSU ? sys.PSU.price : 0) + (sys.Cooler ? sys.Cooler.price : 0);
+
+  resultDiv.innerHTML = `
+    <h2>${budget} TL Bütçesi İçin Önerilen Sistem</h2>
+    <ul>
+      <li>CPU: ${sys.CPU.name} — ₺${sys.CPU.price.toLocaleString()}</li>
+      <li>GPU: ${sys.GPU.name} — ₺${sys.GPU.price.toLocaleString()}</li>
+      <li>RAM: ${sys.RAM.name} — ₺${sys.RAM.price.toLocaleString()}</li>
+      <li>SSD: ${sys.SSD.name} — ₺${sys.SSD.price.toLocaleString()}</li>
+      <li>Anakart: ${sys.Mobo.name} — ₺${sys.Mobo.price.toLocaleString()}</li>
+      ${sys.PSU ? `<li>PSU: ${sys.PSU.name} — ₺${sys.PSU.price.toLocaleString()}</li>` : ''}
+      <li>Kasa: ${sys.Case.name} — ₺${sys.Case.price.toLocaleString()}</li>
+      ${sys.Cooler ? `<li>Soğutucu: ${sys.Cooler.name} — ₺${sys.Cooler.price.toLocaleString()}</li>` : ''}
+    </ul>
+    <div class="total">Toplam Fiyat: ₺${total.toLocaleString()}</div>
+  `;
+}
+</script>
+
+</body>
+</html>
